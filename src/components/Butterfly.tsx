@@ -15,9 +15,6 @@ export function Butterfly({ id, volume, themeColor }: ButterflyProps) {
   const angle = useRef(Math.random() * 360);
   const speed = useRef(0.1 + Math.random() * 0.15);
   
-  // The provided wing image URL
-  const wingUrl = "https://drive.google.com/uc?export=download&id=162U8WyPO1kjuzLk_Ud-sUNFkU7lnOJRr";
-
   useEffect(() => {
     let frame: number;
     let trailCounter = 0;
@@ -63,8 +60,8 @@ export function Butterfly({ id, volume, themeColor }: ButterflyProps) {
       animate={controls}
       style={{
         position: 'absolute',
-        width: '80px',
-        height: '80px',
+        width: '40px',
+        height: '40px',
         zIndex: 10,
         pointerEvents: 'none',
       }}
@@ -82,29 +79,15 @@ export function Butterfly({ id, volume, themeColor }: ButterflyProps) {
         style={{
           position: 'absolute',
           left: '0',
-          width: '40px',
-          height: '80px',
+          width: '20px',
+          height: '40px',
+          background: `linear-gradient(to right, transparent, ${themeColor})`,
+          borderRadius: '20px 0 0 20px',
           transformOrigin: 'right center',
-          border: 'none',
-          outline: 'none',
+          filter: `drop-shadow(0 0 8px ${themeColor})`,
+          opacity: 0.8,
         }}
-      >
-        <img 
-          src={wingUrl} 
-          alt="" 
-          referrerPolicy="no-referrer"
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'contain',
-            transform: 'scaleX(-1)', // Flip for left wing
-            filter: `hue-rotate(${id * 45}deg) brightness(1.1) saturate(1.2) drop-shadow(0 0 5px ${themeColor})`,
-            border: 'none',
-            outline: 'none',
-            userSelect: 'none',
-          }}
-        />
-      </motion.div>
+      />
 
       {/* Right Wing */}
       <motion.div
@@ -119,41 +102,28 @@ export function Butterfly({ id, volume, themeColor }: ButterflyProps) {
         style={{
           position: 'absolute',
           right: '0',
-          width: '40px',
-          height: '80px',
+          width: '20px',
+          height: '40px',
+          background: `linear-gradient(to left, transparent, ${themeColor})`,
+          borderRadius: '0 20px 20px 0',
           transformOrigin: 'left center',
-          border: 'none',
-          outline: 'none',
+          filter: `drop-shadow(0 0 8px ${themeColor})`,
+          opacity: 0.8,
         }}
-      >
-        <img 
-          src={wingUrl} 
-          alt="" 
-          referrerPolicy="no-referrer"
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'contain',
-            filter: `hue-rotate(${id * 45}deg) brightness(1.1) saturate(1.2) drop-shadow(0 0 5px ${themeColor})`,
-            border: 'none',
-            outline: 'none',
-            userSelect: 'none',
-          }}
-        />
-      </motion.div>
+      />
 
-      {/* Body - Hidden or adjusted as the image has its own body-like part */}
+      {/* Body */}
       <div
         style={{
           position: 'absolute',
-          left: '39px',
-          top: '20px',
+          left: '19px',
+          top: '10px',
           width: '2px',
-          height: '30px',
-          backgroundColor: '#111',
+          height: '20px',
+          backgroundColor: '#fff',
+          boxShadow: `0 0 10px ${themeColor}`,
           borderRadius: '1px',
           zIndex: 11,
-          opacity: 0.5,
         }}
       />
     </motion.div>
