@@ -1,0 +1,5 @@
+{
+  "name": "Butterfly Symphony",
+  "description": "An interactive experience with 25 fluttering butterflies that react to your voice and sound.",
+  "requestFramePermissions": ["microphone"]
+}
