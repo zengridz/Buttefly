@@ -22,7 +22,7 @@ export function Butterfly({ id, volume, themeColor }: ButterflyProps) {
       const volumeBoost = volume * 1.0;
       const currentSpeed = speed.current + volumeBoost;
       
-      angle.current += (Math.random() - 0.5) * 5 * (1 + volumeBoost);
+      angle.current += (Math.random() - 0.5) * 12 * (1 + volumeBoost);
       
       const rad = (angle.current * Math.PI) / 180;
       x.current += Math.cos(rad) * currentSpeed;

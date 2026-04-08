@@ -36,13 +36,13 @@ export function ParticleSystem({ volume }: { volume: number }) {
       particles.current.push({
         x: (x / 100) * canvas.width,
         y: (y / 100) * canvas.height,
-        vx: (Math.random() - 0.5) * 0.1,
-        vy: (Math.random() - 0.5) * 0.1,
-        life: 0.4 + Math.random() * 0.4,
+        vx: (Math.random() - 0.5) * 0.05,
+        vy: (Math.random() - 0.5) * 0.05,
+        life: 1.0, // Full life for 3 seconds
         color: color || '#00ff88',
-        size: 0.5 + Math.random() * 1.0,
-        type: 'dust',
-        opacity: 0.4 + Math.random() * 0.4,
+        size: 1.5 + Math.random() * 1.5,
+        type: 'dust', // Using dust type but with specific life
+        opacity: 0.8, // Brighter start
       });
     };
 
@@ -105,12 +105,12 @@ export function ParticleSystem({ volume }: { volume: number }) {
         p.x += p.vx;
         p.y += p.vy;
         
-        // Slower life decay
-        p.life -= p.type === 'glint' ? 0.02 : 0.005;
+        // Slower life decay for 3s lifespan (1 / (60fps * 3s) ≈ 0.0055)
+        p.life -= p.type === 'glint' ? 0.02 : 0.0055;
         
         if (p.life <= 0) return false;
 
-        // Shimmer effect for glints
+        // Shimmer effect for glints, fade for others
         const currentOpacity = p.type === 'glint' 
           ? p.opacity * Math.sin(Date.now() / 100) * p.life
           : p.opacity * p.life;
@@ -128,9 +128,18 @@ export function ParticleSystem({ volume }: { volume: number }) {
           ctx.closePath();
           ctx.fill();
         } else {
+          // Add glow for trail-like particles (dust with high initial opacity)
+          if (p.opacity > 0.5) {
+            ctx.shadowBlur = 10 * p.life;
+            ctx.shadowColor = p.color;
+          } else {
+            ctx.shadowBlur = 0;
+          }
+          
           ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, p.size * (0.5 + p.life * 0.5), 0, Math.PI * 2);
           ctx.fill();
+          ctx.shadowBlur = 0; // Reset for next particle
         }
         
         return true;
