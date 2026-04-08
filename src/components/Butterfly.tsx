@@ -85,7 +85,8 @@ export function Butterfly({ id, volume, themeColor }: ButterflyProps) {
           width: '40px',
           height: '80px',
           transformOrigin: 'right center',
-          filter: `drop-shadow(0 0 5px ${themeColor})`,
+          border: 'none',
+          outline: 'none',
         }}
       >
         <img 
@@ -97,7 +98,10 @@ export function Butterfly({ id, volume, themeColor }: ButterflyProps) {
             height: '100%',
             objectFit: 'contain',
             transform: 'scaleX(-1)', // Flip for left wing
-            filter: `hue-rotate(${id * 45}deg) brightness(1.1) saturate(1.2)`, // Subtle variety
+            filter: `hue-rotate(${id * 45}deg) brightness(1.1) saturate(1.2) drop-shadow(0 0 5px ${themeColor})`,
+            border: 'none',
+            outline: 'none',
+            userSelect: 'none',
           }}
         />
       </motion.div>
@@ -118,7 +122,8 @@ export function Butterfly({ id, volume, themeColor }: ButterflyProps) {
           width: '40px',
           height: '80px',
           transformOrigin: 'left center',
-          filter: `drop-shadow(0 0 5px ${themeColor})`,
+          border: 'none',
+          outline: 'none',
         }}
       >
         <img 
@@ -129,7 +134,10 @@ export function Butterfly({ id, volume, themeColor }: ButterflyProps) {
             width: '100%',
             height: '100%',
             objectFit: 'contain',
-            filter: `hue-rotate(${id * 45}deg) brightness(1.1) saturate(1.2)`,
+            filter: `hue-rotate(${id * 45}deg) brightness(1.1) saturate(1.2) drop-shadow(0 0 5px ${themeColor})`,
+            border: 'none',
+            outline: 'none',
+            userSelect: 'none',
           }}
         />
       </motion.div>

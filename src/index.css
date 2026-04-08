@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+img {
+  border-style: none;
+  outline: none;
+}
