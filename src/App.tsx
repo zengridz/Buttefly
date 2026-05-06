@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Mic, MicOff, Volume2 } from 'lucide-react';
 import { useAudioAnalyzer } from './hooks/useAudioAnalyzer';
-import { Butterfly } from './components/Butterfly';
+import { Fish } from './components/Fish';
 import { ParticleSystem } from './components/ParticleSystem';
 
 const EMERALD_THEME = {
@@ -16,7 +16,7 @@ const EMERALD_THEME = {
 };
 
 export default function App() {
-  const { volume, isAnalyzing, startAnalyzing, stopAnalyzing } = useAudioAnalyzer();
+  const { volume, isAnalyzing, error, startAnalyzing, stopAnalyzing } = useAudioAnalyzer();
 
   useEffect(() => {
     // Attempt to start analyzing immediately
@@ -24,11 +24,11 @@ export default function App() {
     startAnalyzing();
   }, [startAnalyzing]);
 
-  const butterflies = Array.from({ length: 25 }, (_, i) => i);
+  const fishes = Array.from({ length: 50 }, (_, i) => i);
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-[#0a0502] font-sans text-white">
-      {/* Atmospheric Background */}
+      {/* Dynamic Background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div 
           initial={{ opacity: 0 }}
@@ -45,9 +45,9 @@ export default function App() {
       {/* Particle System */}
       <ParticleSystem volume={volume} />
 
-      {/* Butterflies */}
-      {butterflies.map((id) => (
-        <Butterfly key={id} id={id} volume={volume} themeColor={EMERALD_THEME.color} />
+      {/* Fish */}
+      {fishes.map((id) => (
+        <Fish key={id} id={id} volume={volume} themeColor={EMERALD_THEME.color} />
       ))}
 
       {/* UI Overlay */}
@@ -56,18 +56,36 @@ export default function App() {
           <motion.h1 
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="text-4xl md:text-6xl font-light tracking-tighter text-white/90"
+            className="text-4xl md:text-6xl font-space-mono tracking-tight text-white mb-2 uppercase"
           >
-            BUTTERFLY <span className="italic font-serif" style={{ color: EMERALD_THEME.color }}>SYMPHONY</span>
+            Whistles and fishes
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.8 }}
-            className="text-sm md:text-base font-light tracking-wide mt-4 text-[#00ff88]"
+            className="text-sm md:text-base font-space-mono font-light tracking-wide mt-4 text-[#00ff88]"
           >
-            Butterflies react to your voice
+            Fishes react to your whistles
           </motion.p>
         </header>
+
+        {/* Error Message */}
+        {error && (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-red-500/10 border border-red-500/50 backdrop-blur-xl px-6 py-4 rounded-2xl max-w-md text-center pointer-events-auto"
+          >
+            <p className="text-red-400 font-space-mono text-xs uppercase tracking-widest mb-3">Connection Error</p>
+            <p className="text-white/80 text-sm mb-4">{error}</p>
+            <button 
+              onClick={() => startAnalyzing()}
+              className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-full text-xs font-bold uppercase tracking-widest transition-colors"
+            >
+              Retry Access
+            </button>
+          </motion.div>
+        )}
 
         <div /> {/* Spacer for middle */}
 

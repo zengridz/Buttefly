@@ -15,6 +15,11 @@ interface Particle {
 export function ParticleSystem({ volume }: { volume: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particles = useRef<Particle[]>([]);
+  const volumeRef = useRef(volume);
+
+  useEffect(() => {
+    volumeRef.current = volume;
+  }, [volume]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -32,6 +37,7 @@ export function ParticleSystem({ volume }: { volume: number }) {
     const colors = ['#FF69B4', '#00CED1', '#9370DB', '#FFA500', '#FFD700', '#7FFF00'];
 
     const handleTrail = (e: any) => {
+      if (particles.current.length > 300) return;
       const { x, y, color } = e.detail;
       particles.current.push({
         x: (x / 100) * canvas.width,
@@ -46,9 +52,12 @@ export function ParticleSystem({ volume }: { volume: number }) {
       });
     };
 
-    window.addEventListener('butterfly-trail', handleTrail);
+    window.addEventListener('fish-trail', handleTrail);
+
+    let animationFrameId: number;
 
     const animate = () => {
+      const currentVolume = volumeRef.current;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Ambient Spawning (Dust and Pollen)
@@ -82,14 +91,16 @@ export function ParticleSystem({ volume }: { volume: number }) {
         });
       }
 
+
+
       // Sound-reactive Spawning
-      if (volume > 0.1) {
-        const count = Math.floor(volume * 5); // Reduced count
+      if (currentVolume > 0.1 && particles.current.length < 400) {
+        const count = Math.floor(currentVolume * 4); 
         for (let i = 0; i < count; i++) {
           particles.current.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
-            vx: (Math.random() - 0.5) * 1.0, // Reduced velocity
+            vx: (Math.random() - 0.5) * 1.0, 
             vy: (Math.random() - 0.5) * 1.0,
             life: 1,
             color: colors[Math.floor(Math.random() * colors.length)],
@@ -104,6 +115,11 @@ export function ParticleSystem({ volume }: { volume: number }) {
       particles.current = particles.current.filter((p) => {
         p.x += p.vx;
         p.y += p.vy;
+        
+        // Slight upward drift for bubbles/plankton
+        if (p.type === 'dust') {
+          p.y -= 0.1;
+        }
         
         // Slower life decay for 3s lifespan (1 / (60fps * 3s) ≈ 0.0055)
         p.life -= p.type === 'glint' ? 0.02 : 0.0055;
@@ -128,31 +144,22 @@ export function ParticleSystem({ volume }: { volume: number }) {
           ctx.closePath();
           ctx.fill();
         } else {
-          // Add glow for trail-like particles (dust with high initial opacity)
-          if (p.opacity > 0.5) {
-            ctx.shadowBlur = 10 * p.life;
-            ctx.shadowColor = p.color;
-          } else {
-            ctx.shadowBlur = 0;
-          }
-          
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.size * (0.5 + p.life * 0.5), 0, Math.PI * 2);
           ctx.fill();
-          ctx.shadowBlur = 0; // Reset for next particle
         }
         
         return true;
       });
 
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
     };
 
-    const frame = requestAnimationFrame(animate);
+    animationFrameId = requestAnimationFrame(animate);
     return () => {
-      cancelAnimationFrame(frame);
+      cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resize);
-      window.removeEventListener('butterfly-trail', handleTrail);
+      window.removeEventListener('fish-trail', handleTrail);
     };
   }, [volume]);
 

@@ -1,4 +1,10 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen&family=Space+Mono&display=swap');
+
+@theme {
+  --font-silkscreen: "Silkscreen", cursive;
+  --font-space-mono: "Space Mono", monospace;
+}
 
 img {
   border-style: none;

@@ -1,5 +1,5 @@
 {
-  "name": "Butterfly Symphony",
-  "description": "An interactive experience with 25 fluttering butterflies that react to your voice and sound.",
+  "name": "Whistles and Fishes",
+  "description": "An interactive soundscape where butterflies and particles react to your whistles and voice.",
   "requestFramePermissions": ["microphone"]
 }
