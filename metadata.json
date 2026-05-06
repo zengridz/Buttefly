@@ -1,5 +1,5 @@
 {
   "name": "Whistles and Fishes",
-  "description": "An interactive soundscape where butterflies and particles react to your whistles and voice.",
+  "description": "An interactive soundscape where fishes and particles react to your whistles. Features a 5-minute pond cycling system for continuous performance.",
   "requestFramePermissions": ["microphone"]
 }

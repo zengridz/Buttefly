@@ -12,7 +12,7 @@ interface Particle {
   opacity: number;
 }
 
-export function ParticleSystem({ volume }: { volume: number }) {
+export function ParticleSystem({ volume, themeColor }: { volume: number; themeColor: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particles = useRef<Particle[]>([]);
   const volumeRef = useRef(volume);
@@ -34,7 +34,7 @@ export function ParticleSystem({ volume }: { volume: number }) {
     window.addEventListener('resize', resize);
     resize();
 
-    const colors = ['#FF69B4', '#00CED1', '#9370DB', '#FFA500', '#FFD700', '#7FFF00'];
+    const colors = [themeColor, '#FFFFFF', themeColor, '#FFFFFF', themeColor];
 
     const handleTrail = (e: any) => {
       if (particles.current.length > 300) return;
@@ -161,7 +161,7 @@ export function ParticleSystem({ volume }: { volume: number }) {
       window.removeEventListener('resize', resize);
       window.removeEventListener('fish-trail', handleTrail);
     };
-  }, [volume]);
+  }, [volume, themeColor]);
 
   return (
     <canvas
